@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Caldos Dona Cely — Cardápio Digital</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+    <div id="modal-overlay"></div>
+    
+    <div id="theme-toggle-container">
+        <button class="theme-toggle-button" id="theme-toggle" aria-label="Alternar tema para claro/escuro">
+            <span class="toggle-ball"></span>
+            <span class="toggle-icon moon-icon" aria-hidden="true">&#9790;</span>
+            <span class="toggle-icon sun-icon" aria-hidden="true">&#9788;</span>
+        </button>
+    </div>
+
+    <div class="wrap">
+        <header class="hero">
+            <div class="logo-container">
+                <img src="src/images/LOGO.avif" alt="Logo Caldos Dona Cely" class="logo"> 
+            </div>
+
+            <div class="carousel" id="carousel">
+                <div class="slide" data-slide-index="0" style="background-image:url('src/images/CALDO_FEIJAO.avif')"></div>
+                <div class="slide" data-slide-index="1" style="background-image:url('src/images/CALDO_VERDE.avif');" loading="lazy"></div>
+                <div class="slide" data-slide-index="2" style="background-image:url('src/images/CALDO_KENGA.jpeg');" loading="lazy"></div>
+            </div>
+            <div class="overlay">
+                <div class="controls" id="dots"></div> 
+                <div class="hero-text">
+                    <h1 class="restaurant-name">Caldos Dona Cely</h1>
+                    <p class="welcome">Bem-vindo(a)! Confira nossos caldos preparados com carinho e amor.</p>
+                </div>
+            </div>
+        </header>
+    
+        <nav class="category-menu" id="category-menu">
+            </nav>
+
+        <main id="menu-content">
+            </main>
+
+        <footer>
+            <div class="footer-info">
+                <div>Caldos Dona Cely • Horário: 11:00 - 22:00</div>
+                <div style="margin-top:6px">Telefone: (00) 9 0000-0000</div>
+            </div>
+            
+            <div class="social-links">
+                <a href="https://www.ifood.com.br/delivery/santana-de-parnaiba-sp/caldos-da-dona-cely-e-marmitex-parque-santana/0b15ed4f-c261-48ff-8e62-7b4a6ca60d7c" target="_blank">iFood</a> 
+                | 
+                <a href="https://www.instagram.com/caldosdadonacely/" target="_blank">Instagram</a>
+            </div>
+
+            <p>Escaneie para fazer seu pedido:</p>
+            <div id="qrcode"></div>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    
+    <script src="src/script.js"></script>
+</body>
+</html>

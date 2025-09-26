@@ -1,0 +1,526 @@
+/* ======================================= */
+/* === 1. TEMA ESCURO (PADRÃO) ============ */
+/* ======================================= */
+:root{
+    /* TEMA ESCURO (Moon Icon) */
+    --bg:#1a1a1a; 
+    --card-bg:#2c2c2c; 
+    --accent:#e64a19; 
+    --primary-dark: #f0f0f0; 
+    --muted:#b0b0b0; 
+    --radius:12px;
+    --max-width:1100px;
+    --shadow: 0 4px 15px rgba(0,0,0,0.4); 
+    --shadow-accent: 0 0 15px rgba(230, 74, 25, 0.6); 
+    --font-stack: 'Inter', system-ui, sans-serif;
+    
+    --carousel-border-color: #9d3312; 
+    --carousel-frame-shadow: 0 10px 35px rgba(0,0,0,0.6); 
+    
+    /* VARIAVEIS DO TOGGLE */
+    --toggle-bg: #4c4c4c;
+    --toggle-ball-color: var(--primary-dark); /* Cor da esfera (Lua) */
+    --toggle-icon-color: var(--muted);
+    --toggle-icon-active-color: var(--accent);
+}
+
+/* ======================================= */
+/* === 2. TEMA CLARO (SUBSTITUIÇÃO) ======= */
+/* ======================================= */
+.light-mode {
+    /* TEMA CLARO (Sun Icon) */
+    --bg:#fef7e6; 
+    --card-bg:#ffffff;
+    --accent:#a32c25; 
+    --primary-dark: #5e1915; 
+    --muted:#59534c; 
+    --shadow: 0 4px 12px rgba(0,0,0,0.06); 
+    --shadow-accent: 0 0 10px rgba(163, 44, 37, 0.4);
+
+    --carousel-border-color: #7b221d; 
+    --carousel-frame-shadow: 0 10px 30px rgba(0,0,0,0.35);
+
+    /* VARIAVEIS DO TOGGLE */
+    --toggle-bg: var(--accent);
+    --toggle-ball-color: var(--card-bg); /* Cor da esfera (Sol) */
+    --toggle-icon-color: var(--card-bg);
+    --toggle-icon-active-color: var(--primary-dark);
+}
+
+/* Keyframes para efeito Zoom/Pan (Carrossel) */
+@keyframes pan-zoom {
+    0% { transform: scale(1.03) translateX(0); }
+    50% { transform: scale(1.08) translateX(1%); }
+    100% { transform: scale(1.03) translateX(0); }
+}
+
+/* Keyframes para o movimento "cascata" do background */
+@keyframes background-cascade {
+    0% { background-position: 0 0; }
+    100% { background-position: 200px 200px; } 
+}
+
+/* Reset e Base */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body.modal-open {
+    overflow: hidden;
+    padding-right: 15px;
+}
+
+body{
+    font-family: var(--font-stack);
+    /* CAMINHO CORRIGIDO: Agora aponta para src/images/BACKGROUND.jpg */
+    background: var(--bg) url('images/BACKGROUND.jpg') repeat; 
+    background-size: 100px 100px; 
+    animation: background-cascade 60s linear infinite; 
+    color:var(--primary-dark);
+    padding: 0; 
+    display:flex;
+    justify-content:center;
+    line-height: 1.5;
+    transition: background 0.3s;
+}
+
+.wrap{
+    width:100%;
+    max-width:var(--max-width);
+    z-index: 1; 
+    position: relative;
+    backdrop-filter: blur(8px); 
+    -webkit-backdrop-filter: blur(8px); 
+    background: rgba(0, 0, 0, 0.6); 
+    border-radius: 0; 
+    min-height: 100vh; 
+    padding: 24px 16px; 
+    transition: background-color 0.4s;
+}
+.light-mode .wrap {
+    background: rgba(255, 255, 255, 0.6);
+}
+
+/* ================================================= */
+/* === 3. ESTILOS DO BOTÃO DE TEMA ================= */
+/* ================================================= */
+#theme-toggle-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 50;
+}
+
+.theme-toggle-button {
+    width: 70px; 
+    height: 35px; 
+    border-radius: 17.5px; 
+    background: var(--toggle-bg); 
+    border: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    cursor: pointer;
+    position: relative;
+    padding: 0 5px; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.4s;
+}
+
+/* Ícones de Sol e Lua */
+.toggle-icon {
+    font-size: 18px; 
+    color: var(--toggle-icon-color);
+    line-height: 1;
+    transition: color 0.4s;
+}
+
+/* A esfera que se move */
+.toggle-ball {
+    position: absolute;
+    width: 25px; 
+    height: 25px;
+    border-radius: 50%;
+    background: var(--toggle-ball-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: transform 0.4s ease-in-out, background-color 0.4s;
+    transform: translateX(0px); 
+}
+
+/* Tema CLARO: Move a esfera para a direita */
+.light-mode .toggle-ball {
+    transform: translateX(35px); 
+    background-color: var(--toggle-ball-color);
+}
+
+.sun-icon { color: var(--toggle-icon-color); }
+.moon-icon { color: var(--toggle-icon-active-color); } 
+
+.light-mode .sun-icon { color: var(--toggle-icon-active-color); } 
+.light-mode .moon-icon { color: var(--toggle-icon-color); } 
+
+
+/* --- Hero/Cabeçalho e Carrossel --- */
+.hero{
+    position:relative;
+    border-radius:var(--radius);
+    overflow:hidden;
+    box-shadow: var(--carousel-frame-shadow);
+    margin-bottom:24px;
+    background: var(--carousel-border-color); 
+    padding: 8px; 
+    border: 1px solid rgba(255, 255, 255, 0.15); 
+    transition: all 0.3s ease-in-out;
+}
+.hero:hover {
+    box-shadow: 0 12px 40px rgba(0,0,0,0.7); 
+    transform: translateY(-2px);
+}
+
+.logo-container {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    padding: 10px 20px; 
+    background: var(--card-bg); 
+    border-radius: 10px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5); 
+    border: 1px solid var(--accent); 
+    backdrop-filter: blur(2px); 
+    -webkit-backdrop-filter: blur(2px);
+    transition: all 0.3s ease;
+}
+.logo-container:hover {
+    transform: translateX(-50%) translateY(-2px); 
+    box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+}
+
+.logo { height: 55px; width: auto; display: block; } 
+
+.carousel{ 
+    position:relative; 
+    width:100%; 
+    height:240px; 
+    display:flex; 
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+    border-radius: var(--radius); 
+    overflow: hidden;
+}
+.slide{ 
+    min-width:100%; 
+    height:100%; 
+    background-size:cover; 
+    background-position:center; 
+    flex-shrink: 0; 
+    animation: pan-zoom 18s ease-in-out infinite alternate; 
+    transition: opacity 0.6s ease-in-out; 
+}
+
+.overlay{
+    position:absolute;
+    inset:0;
+    z-index: 10;
+    padding:24px; 
+    
+    background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.8) 60%, rgba(0,0,0,0.95) 100%); 
+    
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    border-radius: var(--radius);
+}
+.hero-text{ 
+    color:white; 
+    display:flex; 
+    flex-direction:column; 
+    gap:6px; 
+    text-shadow: 2px 2px 10px rgba(0,0,0,1); 
+    margin-top: 60px; 
+    text-align: center; 
+    z-index: 20; 
+}
+.restaurant-name{ 
+    font-size:clamp(28px, 7vw, 42px); 
+    font-weight:900; 
+    letter-spacing: 1px; 
+    text-transform: uppercase; 
+}
+.welcome{ 
+    font-size:clamp(16px, 3.5vw, 20px); 
+    opacity:0.98; 
+    font-weight: 600; 
+}
+.controls{ 
+    position:absolute; 
+    top:15px; 
+    right:15px; 
+    left: unset; 
+    transform: none; 
+    display:flex; 
+    gap:10px; 
+    z-index: 30; 
+    background: rgba(0, 0, 0, 0.4); 
+    padding: 6px 12px; 
+    border-radius: 15px; 
+    box-shadow: 0 2px 10px rgba(0,0,0,0.4); 
+    backdrop-filter: blur(6px); 
+    -webkit-backdrop-filter: blur(6px);
+}
+.dot{ 
+    width:10px; 
+    height:10px; 
+    border-radius:50%; 
+    background:rgba(255,255,255,0.7); 
+    cursor:pointer; 
+    transition: all 0.3s ease;
+    border: 1px solid var(--primary-dark); 
+    box-shadow: 0 0 4px rgba(0,0,0,0.4); 
+}
+.dot:hover:not(.active) {
+    transform: scale(1.15); 
+    background: rgba(255,255,255,1);
+    border-color: var(--accent);
+}
+.dot.active{ 
+    background:var(--accent); 
+    transform: scale(1.3); 
+    border-color: var(--card-bg); 
+    box-shadow: var(--shadow-accent); 
+}
+
+/* --- MENU DE CATEGORIAS (Responsividade Aprimorada) --- */
+.category-menu {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
+    padding: 8px;
+    background: var(--card-bg); 
+    opacity: 0.9;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    /* Garante quebra de linha em telas pequenas */
+    flex-wrap: wrap; 
+    backdrop-filter: blur(6px); 
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.1); 
+}
+
+.category-button {
+    background: transparent;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-size: clamp(15px, 3vw, 17px); /* Responsivo */
+    font-weight: 700;
+    color: var(--primary-dark);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.6); 
+    /* Permite que o botão se expanda/encolha conforme a largura disponível */
+    flex-grow: 1;
+    min-width: 120px;
+    max-width: 50%; /* Limita a largura máxima em telas maiores para que não ocupe 100% se houver espaço */
+}
+.light-mode .category-button {
+    text-shadow: none; 
+}
+
+
+.category-button:hover:not(.active) {
+    background: rgba(0, 0, 0, 0.1); 
+    transform: translateY(-1px);
+}
+.light-mode .category-button:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.95); 
+}
+
+.category-button.active {
+    background: var(--accent);
+    color: var(--card-bg); 
+    box-shadow: var(--shadow-accent);
+    transform: translateY(-2px);
+}
+
+/* --- LISTA DE ITENS E EFEITO FADE --- */
+.menu-section {
+    padding: 10px 0;
+    opacity: 1;
+    transition: opacity 0.4s ease-in-out;
+}
+
+.menu-section:not(.active) {
+    display: none;
+}
+
+.section-title {
+    font-size: clamp(24px, 6vw, 28px); /* Responsivo */
+    font-weight: 800; 
+    margin-bottom: 25px;
+    color: var(--primary-dark);
+    text-align: center;
+    padding: 10px 20px;
+    background-color: var(--card-bg); 
+    opacity: 0.85;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    max-width: 400px;
+    margin: 0 auto 25px auto;
+    border: 1px solid rgba(255,255,255,0.1); 
+    backdrop-filter: blur(6px); 
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.items{
+    display:grid;
+    gap:18px;
+}
+
+.card{ 
+    background:var(--card-bg); 
+    padding:18px; 
+    border-radius:var(--radius); 
+    box-shadow:var(--shadow); 
+    display:flex; 
+    gap:18px; 
+    align-items:flex-start; 
+    transition: all 0.2s ease; 
+    border: 1px solid rgba(255,255,255,0.1); 
+    cursor: pointer; 
+    position: relative; 
+    z-index: 1; 
+}
+.light-mode .card {
+    border: 1px solid rgba(0, 0, 0, 0.08); 
+}
+
+.card:hover { 
+    transform: translateY(-3px); 
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2); 
+    border-color: var(--accent); 
+}
+.thumb{ 
+    width:110px; 
+    height:110px; 
+    border-radius:12px; 
+    flex-shrink:0; 
+    background:#444; 
+    background-size:cover; 
+    background-position:center; 
+    border: 3px solid var(--accent); 
+    box-shadow: 0 0 10px var(--shadow-accent); 
+}
+.meta{ flex:1; min-width: 0; }
+.item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; } 
+.name{ font-weight:700; font-size:clamp(16px, 4vw, 17px); color: var(--primary-dark); line-height: 1.3; margin-right: 15px; word-break: break-word; } 
+.price{ font-weight:800; font-size:clamp(18px, 5vw, 20px); color:var(--accent); white-space: nowrap; flex-shrink: 0; } 
+.desc{ color:var(--muted); font-size:14px; margin-top:6px; line-height: 1.5; } 
+
+/* Estilos do Modal (Responsividade Aprimorada) */
+#modal-overlay { 
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+    background-color: rgba(0, 0, 0, 0.85); 
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); 
+    z-index: 999; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.4s ease; padding: 15px; 
+    overflow-y: auto; 
+} 
+#modal-overlay.active { display: flex; opacity: 1; }
+
+.card.expanded { 
+    background: var(--card-bg); 
+    color: var(--primary-dark); 
+    max-width: 500px;
+    width: 90%;
+    margin: auto;
+    flex-direction: column;
+    align-items: center;
+    padding: 25px; 
+}
+.card.expanded .thumb {
+    width: 100%;
+    height: 200px;
+    margin-bottom: 15px;
+    border-radius: 12px;
+}
+.card.expanded .name { font-size: clamp(20px, 6vw, 24px); margin-right: 0; text-align: center; } 
+.card.expanded .price { font-size: clamp(22px, 7vw, 26px); color: var(--accent); text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4); } 
+.card.expanded .desc { font-size: clamp(14px, 4vw, 16px); color: var(--muted); margin-top: 12px; text-align: center; } 
+.card.expanded .item-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.close-btn { 
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 30px;
+    color: var(--accent);
+    cursor: pointer;
+    line-height: 1;
+    z-index: 10;
+    transition: color 0.2s;
+} 
+.close-btn:hover { color: var(--primary-dark); } 
+
+/* Estilos do Rodapé */
+footer{
+    margin-top:50px; padding-top: 25px; padding-bottom: 25px; 
+    border-top: 1px solid rgba(255,255,255,0.1); 
+    font-size:14px; color:var(--muted);
+    display: flex; flex-direction: column; align-items: center; text-align: center; 
+    background: var(--card-bg); 
+    opacity: 0.9;
+    border-radius: var(--radius); 
+    backdrop-filter: blur(6px); 
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: var(--shadow); 
+    border: 1px solid rgba(255,255,255,0.08); 
+    gap: 12px;
+}
+.light-mode footer {
+    border: 1px solid rgba(0,0,0,0.05); 
+}
+.social-links a { color: var(--primary-dark); text-decoration: none; transition: color 0.2s; padding: 0 5px; }
+.social-links a:hover { color: var(--accent); border-bottom: 2px solid var(--accent); }
+
+/* --- Estilos do QR Code (Correção de Contraste) --- */
+#qrcode { 
+    margin-top: 10px;
+    padding: 10px; /* Aumenta a margem para facilitar o foco do scanner */
+    background: #ffffff !important; /* Fundo branco forçado para alto contraste */
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+}
+
+/* Garante que o QR Code interno seja renderizado corretamente */
+#qrcode img {
+    background-color: #ffffff !important; 
+    padding: 0;
+}
+
+/* Media Queries (AJUSTADO) */
+@media (min-width: 768px){
+    .carousel{ height: 380px; } 
+    .items{ grid-template-columns: repeat(2, 1fr); gap: 28px; } 
+    .card{ padding: 22px; } 
+    .logo-container { top: 40px; padding: 12px 25px; } 
+    .logo { height: 65px; } 
+    .hero-text { margin-top: 80px; } 
+    .restaurant-name{ font-size:clamp(36px, 5vw, 48px); } 
+    .welcome{ font-size:clamp(18px, 2.5vw, 22px); } 
+    .section-title { font-size: 30px; max-width: 450px; }
+    .controls { top: 20px; right: 20px; } 
+    
+    .card.expanded .thumb {
+        height: 250px;
+    }
+}
